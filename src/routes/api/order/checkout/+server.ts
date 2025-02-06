@@ -31,8 +31,8 @@ export async function POST({ cookies, request }: RequestEvent) {
         await conn.beginTransaction()
         try {
             // Create order (TODO: must be execute)
-            const [order] = await conn.query<{ id: number; }>(constant.createCheckout, [v7(), user.id, JSON.stringify(body.info)])
-            const orderId = order[0].id;
+            const [order] = await conn.execute(constant.createCheckout, [v7(), user.id, JSON.stringify(body.info)])
+            const orderId = order.insertId;
             // Create shipping
             const { name, address, address_id, mobile } = body.info
             await conn.execute(constant.createShipping, [orderId, name, address, address_id, mobile])

@@ -8,7 +8,7 @@ interface IConnection extends Connection {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     query: <D>(sql: string, params?: any[]) => [D[], string[]]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    execute: (sql: string, params?: any[]) => ResultSetHeader
+    execute: (sql: string, params?: any[]) => ResultSetHeader[]
 }
 
 export const conn = await mysql.createConnection({
