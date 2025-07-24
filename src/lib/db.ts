@@ -1,3 +1,4 @@
+
 import { DATABASE_HOST, DATABASE_NAME, DATABASE_PASS, DATABASE_USER } from '$env/static/private';
 import type { Connection, ResultSetHeader } from 'mysql2/promise';
 import mysql from 'mysql2/promise';
@@ -17,4 +18,3 @@ export const conn = await mysql.createConnection({
     password: DATABASE_PASS,
     database: DATABASE_NAME
 }) as unknown as IConnection;
-

@@ -1,3 +1,4 @@
+
 import { getUserByMiddleware } from "$lib/middleware/user";
 import { json } from "@sveltejs/kit";
 import { RequestEvent } from "./$types";
@@ -31,8 +32,9 @@ export async function POST({ cookies, request }: RequestEvent) {
         await conn.beginTransaction()
         try {
             // Create order (TODO: must be execute)
-            const [order] = await conn.query<{ id: number; }>(constant.createCheckout, [v7(), user.id])
-            const orderId = order[0].id;
+            const [orderResult] = await conn.execute(constant.createCheckout, [v7(), user.id])
+            console.log(orderResult)
+            const orderId = orderResult.insertId
             // Create shipping
             const { name, address, address_id, mobile } = body.info
             await conn.execute(constant.createShipping, [orderId, name, address, address_id, mobile])
@@ -52,6 +54,7 @@ export async function POST({ cookies, request }: RequestEvent) {
             // Execute transaction
             await conn.commit()
         } catch (e) {
+            console.error(e)
             if (e instanceof Error) {
                 return json({
                     message: e.message
